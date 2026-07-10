@@ -3,8 +3,9 @@
 import Image from "next/image";
 import { FormEvent, useState } from "react";
 
-const EMAIL = "savannahdogindustries@gmail.com";
 const EBAY_URL = "https://www.ebay.com/itm/398143434615";
+const SUPPORT_API_URL = process.env.NEXT_PUBLIC_SUPPORT_API_URL || "https://savannah-dog.com/api/support";
+type RequestKind = "missing_asset" | "general";
 
 const features = [
   {
@@ -45,31 +46,64 @@ const faqs = [
 ];
 
 export default function Home() {
+  const [requestKind, setRequestKind] = useState<RequestKind>("missing_asset");
   const [reportStatus, setReportStatus] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  function submitReport(event: FormEvent<HTMLFormElement>) {
+  function chooseRequestKind(kind: RequestKind, shouldScroll = false) {
+    setRequestKind(kind);
+    setReportStatus("");
+
+    if (shouldScroll) {
+      document.getElementById("support-form")?.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+  }
+
+  async function submitReport(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    const type = String(data.get("type") || "");
-    const symbol = String(data.get("symbol") || "").trim().toUpperCase();
-    const issue = String(data.get("issue") || "");
-    const notes = String(data.get("notes") || "").trim();
-    const body = [
-      "Hello Savannah Dog Industries,",
-      "",
-      "I found an asset that needs attention on my desktop ticker:",
-      `Asset type: ${type}`,
-      `Symbol: ${symbol}`,
-      `Issue: ${issue}`,
-      `Notes: ${notes || "None"}`,
-      "",
-      "Thank you!",
-    ].join("\n");
+    const form = event.currentTarget;
+    const data = new FormData(form);
+    const payload = requestKind === "general"
+      ? {
+          kind: requestKind,
+          name: String(data.get("name") || ""),
+          email: String(data.get("email") || ""),
+          message: String(data.get("message") || ""),
+          website: String(data.get("website") || ""),
+        }
+      : {
+          kind: requestKind,
+          name: String(data.get("name") || ""),
+          email: String(data.get("email") || ""),
+          assetType: String(data.get("assetType") || ""),
+          symbol: String(data.get("symbol") || "").trim().toUpperCase(),
+          issue: String(data.get("issue") || ""),
+          notes: String(data.get("notes") || ""),
+          website: String(data.get("website") || ""),
+        };
 
-    setReportStatus("Opening your email app with the report filled in…");
-    window.location.href = `mailto:${EMAIL}?subject=${encodeURIComponent(
-      `Ticker support: ${type} ${symbol}`,
-    )}&body=${encodeURIComponent(body)}`;
+    setIsSubmitting(true);
+    setReportStatus("Sending your message…");
+
+    try {
+      const response = await fetch(SUPPORT_API_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      const result = await response.json().catch(() => ({}));
+
+      if (!response.ok) {
+        throw new Error(typeof result.error === "string" ? result.error : "Your message could not be sent.");
+      }
+
+      form.reset();
+      setReportStatus(requestKind === "general" ? "Message sent. We’ll get back to you soon." : "Report sent. Thank you for helping us improve the ticker.");
+    } catch (error) {
+      setReportStatus(error instanceof Error ? error.message : "Your message could not be sent. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
   const productSchema = {
@@ -226,45 +260,72 @@ export default function Home() {
           <p className="eyebrow">Product support</p>
           <h2>Found a missing<br /><span>stock or coin?</span></h2>
           <p>
-            Tell us which symbol is missing or not working. Your email app will open with the important details already organized so we can investigate and add support.
+            Tell us which symbol is missing or not working. The report is sent directly to us so we can investigate and add support.
           </p>
           <div className="direct-contact">
             <span>Need help with something else?</span>
-            <a href={`mailto:${EMAIL}?subject=${encodeURIComponent("Desktop ticker question")}`}>Contact us by email <span aria-hidden="true">→</span></a>
+            <button type="button" onClick={() => chooseRequestKind("general", true)}>Send us a message <span aria-hidden="true">→</span></button>
           </div>
         </div>
-        <form className="report-form" onSubmit={submitReport}>
+        <form className="report-form" id="support-form" onSubmit={submitReport}>
           <div className="form-heading"><span>Support request</span><strong>01 / 01</strong></div>
+          <div className="request-tabs" aria-label="Choose a support request type">
+            <button type="button" className={requestKind === "missing_asset" ? "active" : ""} onClick={() => chooseRequestKind("missing_asset")}>Missing stock or coin</button>
+            <button type="button" className={requestKind === "general" ? "active" : ""} onClick={() => chooseRequestKind("general")}>General question</button>
+          </div>
           <div className="field-row">
             <label>
-              Asset type
-              <select name="type" required defaultValue="">
-                <option value="" disabled>Select one</option>
-                <option value="Stock">Stock</option>
-                <option value="Cryptocurrency / Coin">Cryptocurrency / Coin</option>
-              </select>
+              Name <span className="optional">Optional</span>
+              <input name="name" maxLength={100} placeholder="Your name" autoComplete="name" />
             </label>
             <label>
-              Symbol
-              <input name="symbol" required maxLength={16} placeholder="e.g. AAPL or BTC" autoCapitalize="characters" />
+              Email
+              <input name="email" type="email" required maxLength={254} placeholder="you@example.com" autoComplete="email" />
             </label>
           </div>
-          <label>
-            What is happening?
-            <select name="issue" required defaultValue="">
-              <option value="" disabled>Choose the closest match</option>
-              <option value="Symbol is missing / not recognized">Symbol is missing / not recognized</option>
-              <option value="Symbol will not load">Symbol will not load</option>
-              <option value="Price or percentage looks incorrect">Price or percentage looks incorrect</option>
-              <option value="Other issue">Other issue</option>
-            </select>
+          {requestKind === "missing_asset" ? (
+            <>
+              <div className="field-row">
+                <label>
+                  Asset type
+                  <select name="assetType" required defaultValue="">
+                    <option value="" disabled>Select one</option>
+                    <option value="Stock">Stock</option>
+                    <option value="Cryptocurrency / Coin">Cryptocurrency / Coin</option>
+                  </select>
+                </label>
+                <label>
+                  Symbol
+                  <input name="symbol" required maxLength={16} placeholder="e.g. AAPL or BTC" autoCapitalize="characters" />
+                </label>
+              </div>
+              <label>
+                What is happening?
+                <select name="issue" required defaultValue="">
+                  <option value="" disabled>Choose the closest match</option>
+                  <option value="Symbol is missing / not recognized">Symbol is missing / not recognized</option>
+                  <option value="Symbol will not load">Symbol will not load</option>
+                  <option value="Price or percentage looks incorrect">Price or percentage looks incorrect</option>
+                  <option value="Other issue">Other issue</option>
+                </select>
+              </label>
+              <label>
+                Notes <span className="optional">Optional</span>
+                <textarea name="notes" rows={4} maxLength={2000} placeholder="What do you see on the device?" />
+              </label>
+            </>
+          ) : (
+            <label>
+              Message
+              <textarea name="message" rows={6} required minLength={5} maxLength={2000} placeholder="How can we help?" />
+            </label>
+          )}
+          <label className="form-honeypot" aria-hidden="true">
+            Website
+            <input name="website" tabIndex={-1} autoComplete="off" />
           </label>
-          <label>
-            Notes <span className="optional">Optional</span>
-            <textarea name="notes" rows={4} placeholder="What do you see on the device?" />
-          </label>
-          <button className="button submit-button" type="submit">Prepare email report <span aria-hidden="true">→</span></button>
-          <p className="form-note" aria-live="polite">{reportStatus || `The report is sent through your email app to ${EMAIL}.`}</p>
+          <button className="button submit-button" type="submit" disabled={isSubmitting}>{isSubmitting ? "Sending…" : requestKind === "general" ? "Send message" : "Send report"} <span aria-hidden="true">→</span></button>
+          <p className="form-note" aria-live="polite">{reportStatus || "Your message is sent securely without opening an email app."}</p>
         </form>
       </section>
 
@@ -296,7 +357,7 @@ export default function Home() {
         </a>
         <p>Small-batch desktop hardware for people who like useful things.</p>
         <div>
-          <a href={`mailto:${EMAIL}`}>Email</a>
+          <a href="#support" onClick={() => chooseRequestKind("general")}>Contact</a>
           <a href={EBAY_URL} target="_blank" rel="noreferrer">eBay</a>
           <a href="#support">Report an asset</a>
         </div>
