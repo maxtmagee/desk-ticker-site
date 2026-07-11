@@ -109,16 +109,26 @@ export default function Home() {
   const productSchema = {
     "@context": "https://schema.org",
     "@type": "Product",
-    name: "WiFi Desktop Stock and Crypto Ticker",
+    name: "Desk Ticker – WiFi Stock and Crypto Price Display",
     description:
       "A compact desktop ticker that displays stock and cryptocurrency prices, percentage changes, and time over WiFi.",
     image: [
-      "/images/ticker-lifestyle.png",
-      "/images/ticker-front.png",
-      "/images/ticker-ports.jpg",
+      "https://desk-ticker.com/images/ticker-lifestyle.webp",
+      "https://desk-ticker.com/images/ticker-front.webp",
+      "https://desk-ticker.com/images/ticker-ports.jpg",
     ],
+    url: "https://desk-ticker.com/",
+    sameAs: EBAY_URL,
     brand: { "@type": "Brand", name: "Savannah Dog Industries" },
     category: "Desktop stock ticker display",
+  };
+
+  const websiteSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: "Desk Ticker",
+    alternateName: "Savannah Dog Industries Desk Ticker",
+    url: "https://desk-ticker.com/",
   };
 
   const faqSchema = {
@@ -136,6 +146,10 @@ export default function Home() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
       />
       <script
         type="application/ld+json"
@@ -177,14 +191,17 @@ export default function Home() {
         <div className="hero-visual">
           <div className="image-frame hero-image">
             <Image
-              src="/images/ticker-lifestyle.png"
+              src="/images/ticker-lifestyle.webp"
               alt="WiFi stock and crypto ticker displaying market prices on a desk"
               fill
               priority
               sizes="(max-width: 900px) 100vw, 54vw"
             />
           </div>
-          <p className="photo-note">Compact footprint. Big-picture clarity.</p>
+          <p className="photo-note">
+            <span className="photo-note-big">Big-picture clarity.</span>
+            <span className="photo-note-compact">Compact footprint.</span>
+          </p>
         </div>
       </section>
 
@@ -211,7 +228,7 @@ export default function Home() {
         <div className="story-image-wrap">
           <div className="image-frame story-image">
             <Image
-              src="/images/ticker-front.png"
+              src="/images/ticker-front.webp"
               alt="Front view of the desktop ticker showing Bitcoin and stock prices"
               fill
               sizes="(max-width: 900px) 100vw, 50vw"
@@ -268,7 +285,7 @@ export default function Home() {
           </div>
         </div>
         <form className="report-form" id="support-form" onSubmit={submitReport}>
-          <div className="form-heading"><span>Support request</span><strong>01 / 01</strong></div>
+          <div className="form-heading"><span>Support request</span></div>
           <div className="request-tabs" aria-label="Choose a support request type">
             <button type="button" className={requestKind === "missing_asset" ? "active" : ""} onClick={() => chooseRequestKind("missing_asset")}>Missing stock or coin</button>
             <button type="button" className={requestKind === "general" ? "active" : ""} onClick={() => chooseRequestKind("general")}>General question</button>
@@ -325,7 +342,7 @@ export default function Home() {
             <input name="website" tabIndex={-1} autoComplete="off" />
           </label>
           <button className="button submit-button" type="submit" disabled={isSubmitting}>{isSubmitting ? "Sending…" : requestKind === "general" ? "Send message" : "Send report"} <span aria-hidden="true">→</span></button>
-          <p className="form-note" aria-live="polite">{reportStatus || "Your message is sent securely without opening an email app."}</p>
+          {reportStatus && <p className="form-note" aria-live="polite">{reportStatus}</p>}
         </form>
       </section>
 

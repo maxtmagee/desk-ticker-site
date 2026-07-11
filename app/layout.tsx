@@ -2,13 +2,15 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 const baseUrl = new URL("https://desk-ticker.com");
-const title = "WiFi Desktop Stock & Crypto Ticker | Savannah Dog Industries";
-const description = "A compact desktop stock and crypto ticker with live prices, percentage changes, saved watchlists, scrolling display modes, and easy WiFi setup.";
+const title = "Desk Ticker | WiFi Stock & Crypto Price Display";
+const description = "Keep stock and cryptocurrency prices visible throughout the day with Desk Ticker, a compact WiFi market display with a color touchscreen.";
 
 export const metadata: Metadata = {
   metadataBase: baseUrl,
   title,
   description,
+  applicationName: "Desk Ticker",
+  alternates: { canonical: "/" },
   keywords: [
     "desktop stock ticker",
     "crypto price display",
@@ -24,7 +26,7 @@ export const metadata: Metadata = {
     url: baseUrl,
     title,
     description,
-    siteName: "Savannah Dog Industries",
+    siteName: "Desk Ticker",
     images: [{ url: "/og.png", width: 1728, height: 910, alt: "Savannah Dog Industries WiFi stock and crypto ticker" }],
   },
   twitter: {

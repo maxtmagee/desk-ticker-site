@@ -44,3 +44,5 @@ next-env.d.ts
 /.npm-cache/
 /dev.stdout.log
 /dev.stderr.log
+/dev-*.stdout.log
+/dev-*.stderr.log
