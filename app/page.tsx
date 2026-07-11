@@ -106,23 +106,6 @@ export default function Home() {
     }
   }
 
-  const productSchema = {
-    "@context": "https://schema.org",
-    "@type": "Product",
-    name: "Desk Ticker – WiFi Stock and Crypto Price Display",
-    description:
-      "A compact desktop ticker that displays stock and cryptocurrency prices, percentage changes, and time over WiFi.",
-    image: [
-      "https://desk-ticker.com/images/ticker-lifestyle.webp",
-      "https://desk-ticker.com/images/ticker-front.webp",
-      "https://desk-ticker.com/images/ticker-ports.jpg",
-    ],
-    url: "https://desk-ticker.com/",
-    sameAs: EBAY_URL,
-    brand: { "@type": "Brand", name: "Savannah Dog Industries" },
-    category: "Desktop stock ticker display",
-  };
-
   const websiteSchema = {
     "@context": "https://schema.org",
     "@type": "WebSite",
@@ -143,10 +126,6 @@ export default function Home() {
 
   return (
     <main>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }}
-      />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}

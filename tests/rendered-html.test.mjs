@@ -9,5 +9,6 @@ test("exports the product page as static HTML", async () => {
   assert.match(html, /Missing stock or coin/);
   assert.match(html, /General question/);
   assert.match(html, /https:\/\/www\.ebay\.com\/itm\/398143434615/);
+  assert.doesNotMatch(html, /"@type":"Product"/);
   assert.doesNotMatch(html, /mailto:/);
 });
