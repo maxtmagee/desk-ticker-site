@@ -4,6 +4,7 @@ import Image from "next/image";
 import { FormEvent, useState } from "react";
 
 const EBAY_URL = "https://www.ebay.com/itm/398143434615";
+const ETSY_URL = "https://www.etsy.com/listing/4536777676/deskticker-wifi-stock-and-crypto-display";
 const SUPPORT_API_URL = process.env.NEXT_PUBLIC_SUPPORT_API_URL || "https://savannah-dog.com/api/support";
 type RequestKind = "missing_asset" | "general";
 
@@ -145,9 +146,14 @@ export default function Home() {
           <a href="#how-it-works">How it works</a>
           <a href="#support">Support</a>
         </nav>
-        <a className="button button-small" href={EBAY_URL} target="_blank" rel="noreferrer">
-          Shop on eBay <span aria-hidden="true">↗</span>
-        </a>
+        <div className="header-actions">
+          <a className="button button-small" href={ETSY_URL} target="_blank" rel="noreferrer">
+            Etsy <span aria-hidden="true">↗</span>
+          </a>
+          <a className="button button-small secondary-link" href={EBAY_URL} target="_blank" rel="noreferrer">
+            eBay <span aria-hidden="true">↗</span>
+          </a>
+        </div>
       </header>
 
       <section className="hero" id="top">
@@ -158,7 +164,7 @@ export default function Home() {
             A compact WiFi display that keeps your stock and crypto prices visible throughout the day.
           </p>
           <div className="hero-actions">
-            <a className="button" href={EBAY_URL} target="_blank" rel="noreferrer">View the eBay listing <span aria-hidden="true">↗</span></a>
+            <a className="button" href={ETSY_URL} target="_blank" rel="noreferrer">View the Etsy listing <span aria-hidden="true">↗</span></a>
             <a className="text-link" href="#how-it-works">See how it works <span aria-hidden="true">↓</span></a>
           </div>
           <div className="quick-specs" aria-label="Product highlights">
@@ -343,7 +349,7 @@ export default function Home() {
       <section className="closing-cta">
         <p className="eyebrow">Keep your watchlist in sight</p>
         <h2>Give the market<br /><em>a place on your desk.</em></h2>
-        <a className="button button-light" href={EBAY_URL} target="_blank" rel="noreferrer">Shop the ticker on eBay <span aria-hidden="true">↗</span></a>
+        <a className="button button-light" href={ETSY_URL} target="_blank" rel="noreferrer">Shop the ticker on Etsy <span aria-hidden="true">↗</span></a>
       </section>
 
       <footer>
@@ -354,6 +360,7 @@ export default function Home() {
         <p>Small-batch desktop hardware for people who like useful things.</p>
         <div>
           <a href="#support" onClick={() => chooseRequestKind("general")}>Contact</a>
+          <a href={ETSY_URL} target="_blank" rel="noreferrer">Etsy</a>
           <a href={EBAY_URL} target="_blank" rel="noreferrer">eBay</a>
           <a href="#support">Report an asset</a>
         </div>
