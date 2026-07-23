@@ -249,7 +249,7 @@ export default function Home() {
         </div>
         <div className="image-frame ports-image">
           <Image
-            src="/images/ticker-ports.jpg"
+            src="/images/new_port_pic.png"
             alt="Side view of the desktop ticker enclosure and connection ports"
             fill
             sizes="(max-width: 900px) 100vw, 48vw"
