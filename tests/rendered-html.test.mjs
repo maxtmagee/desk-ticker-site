@@ -17,6 +17,7 @@ test("exports the product page as static HTML", async () => {
   assert.match(html, /connect(?: to)? WiFi/i);
   assert.match(html, /Check updates/i);
   assert.match(html, /Settings page 1/i);
+  assert.match(html, /Change Time/i);
   assert.match(html, /Add Stock/i);
   assert.match(html, /Change WiFi/i);
   assert.match(html, /Update check/i);
