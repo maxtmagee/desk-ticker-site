@@ -167,7 +167,7 @@ export default function Home() {
           </p>
           <div className="hero-actions">
             <a className="button" href={ETSY_URL} target="_blank" rel="noreferrer">View the Etsy listing <span aria-hidden="true">↗</span></a>
-            <a className="text-link" href="#how-it-works">See how it works <span aria-hidden="true">↓</span></a>
+            <a className="text-link" href="#walkthrough">See how it works <span aria-hidden="true">↓</span></a>
           </div>
           <div className="quick-specs" aria-label="Product highlights">
             <div><strong>WiFi</strong><span>connected</span></div>

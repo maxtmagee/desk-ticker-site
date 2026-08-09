@@ -13,6 +13,7 @@ test("exports the product page as static HTML", async () => {
   assert.doesNotMatch(html, /"@type":"Product"/);
   assert.doesNotMatch(html, /mailto:/);
   assert.match(html, /href="#walkthrough"/);
+  assert.match(html, /<a class="text-link" href="#walkthrough">See how it works/);
   assert.match(html, /interactive/i);
   assert.match(html, /connect(?: to)? WiFi/i);
   assert.match(html, /Check updates/i);
