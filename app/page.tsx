@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { FormEvent, useState } from "react";
+import DeviceGuide from "./guide/DeviceGuide";
 
 const EBAY_URL = "https://www.ebay.com/itm/398143434615";
 const ETSY_URL = "https://www.etsy.com/listing/4536777676/deskticker-wifi-stock-and-crypto-display";
@@ -144,6 +145,7 @@ export default function Home() {
         <nav aria-label="Primary navigation">
           <a href="#features">Features</a>
           <a href="#how-it-works">How it works</a>
+          <a href="#walkthrough">User guide</a>
           <a href="#support">Support</a>
         </nav>
         <div className="header-actions">
@@ -230,6 +232,9 @@ export default function Home() {
             <li><span>3</span><div><h3>Choose the view</h3><p>Use a focused static display or let multiple assets scroll across the screen.</p></div></li>
             <li><span>4</span><div><h3>Make it yours</h3><p>Adjust refresh timing, scroll speed and spacing, timezone, or flip the screen orientation.</p></div></li>
           </ol>
+          <a className="story-guide-link" href="#walkthrough">
+            Open the interactive user guide <span aria-hidden="true">→</span>
+          </a>
         </div>
       </section>
 
@@ -256,6 +261,8 @@ export default function Home() {
           />
         </div>
       </section>
+
+      <DeviceGuide />
 
       <section className="section support" id="support">
         <div className="support-copy">
@@ -359,6 +366,7 @@ export default function Home() {
         </a>
         <p>Small-batch desktop hardware for people who like useful things.</p>
         <div>
+          <a href="#walkthrough">User guide</a>
           <a href="#support" onClick={() => chooseRequestKind("general")}>Contact</a>
           <a href={ETSY_URL} target="_blank" rel="noreferrer">Etsy</a>
           <a href={EBAY_URL} target="_blank" rel="noreferrer">eBay</a>

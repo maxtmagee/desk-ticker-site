@@ -260,6 +260,21 @@ h2 span { color: var(--green-dark); }
 .steps h3 { margin: 3px 0 7px; font-size: 15px; text-transform: uppercase; letter-spacing: .03em; }
 .steps p { margin: 0; color: rgba(255,255,255,.62); line-height: 1.55; font-size: 14px; }
 
+.story-guide-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 30px;
+  padding-bottom: 7px;
+  border-bottom: 1px solid var(--green);
+  color: var(--green);
+  font-family: "Courier New", monospace;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .03em;
+}
+.story-guide-link:hover { color: var(--white); border-color: var(--white); }
+
 .detail-section { display: grid; grid-template-columns: .95fr 1.05fr; gap: 8vw; align-items: center; }
 .detail-copy h2 { margin-bottom: 35px; max-width: 720px; }
 .detail-copy > p:not(.eyebrow) { color: #5d635d; line-height: 1.75; font-size: 16px; }

@@ -13,6 +13,9 @@
 # testing
 /coverage
 
+# local device-screen reference photos (may contain device identifiers)
+/raw_pics_screen/
+
 # next.js
 /.next/
 /.vinext/
