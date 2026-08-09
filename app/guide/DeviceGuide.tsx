@@ -453,6 +453,7 @@ export default function DeviceGuide() {
   const deviceInfoTimer = useRef<number | null>(null);
   const questionProgressRef = useRef(0);
   const timezoneWheelRef = useRef<HTMLDivElement | null>(null);
+  const keyboardInputRef = useRef<HTMLInputElement | null>(null);
   const timezoneDragRef = useRef({ pointerId: -1, startY: 0, startScrollTop: 0, moved: false });
   const timezoneSuppressClickRef = useRef(false);
 
@@ -511,6 +512,16 @@ export default function DeviceGuide() {
     });
     return () => window.cancelAnimationFrame(frame);
   }, [screen, timezone]);
+
+  useEffect(() => {
+    const isKeyboardScreen = screen === "password" || screen === "addStock" || screen === "addCrypto" || screen === "renameKeyboard";
+    if (!isKeyboardScreen) return;
+    const frame = window.requestAnimationFrame(() => {
+      const input = keyboardInputRef.current;
+      if (input) input.scrollLeft = input.scrollWidth;
+    });
+    return () => window.cancelAnimationFrame(frame);
+  }, [keyboardText, screen]);
 
   useEffect(() => {
     return () => {
@@ -974,10 +985,12 @@ export default function DeviceGuide() {
         <label className={styles.keyboardPrompt}>
           <span>{prompt}</span>
           <input
+            ref={keyboardInputRef}
             aria-label={prompt}
             type="text"
             value={keyboardText}
             onChange={(event) => setKeyboardText(event.target.value.slice(0, maxChars))}
+            onFocus={(event) => { event.currentTarget.scrollLeft = event.currentTarget.scrollWidth; }}
             autoCapitalize={alphaNumeric ? "characters" : "none"}
           />
         </label>

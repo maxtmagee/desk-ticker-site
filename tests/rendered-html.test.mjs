@@ -45,3 +45,10 @@ test("keeps the interactive ticker inside narrow phone viewports", async () => {
   assert.match(css, /\.deviceShell\s*{[^}]*max-width:\s*100%[^}]*min-width:\s*0/s);
   assert.match(css, /\.walkthrough\s*{[^}]*overflow-x:\s*clip/s);
 });
+
+test("scrolls long keyboard entries to their newest characters", async () => {
+  const guide = await readFile(new URL("../app/guide/DeviceGuide.tsx", import.meta.url), "utf8");
+
+  assert.match(guide, /keyboardInputRef/);
+  assert.match(guide, /input\.scrollLeft\s*=\s*input\.scrollWidth/);
+});
