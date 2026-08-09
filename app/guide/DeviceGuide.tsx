@@ -1343,7 +1343,6 @@ export default function DeviceGuide() {
   return (
     <div className={`${styles.guidePage} ${styles.guideEmbed}`}>
       <section className={styles.walkthrough} id="walkthrough">
-        <a className={styles.skipDevice} href="#interactive-device">Skip to interactive device</a>
         <div className={styles.walkthroughHeading}>
           <div>
             <h2>Try the complete flow.</h2>
@@ -1377,11 +1376,15 @@ export default function DeviceGuide() {
             ))}
           </nav>
 
-          <div className={styles.deviceStage} id="interactive-device" tabIndex={-1}>
+          <div className={styles.deviceStage}>
             <p className={styles.srOnly} role="status" aria-live="polite">Desk Ticker screen: {guidance.title}</p>
             <div className={styles.deviceToolbar}>
               <span><i /> Interactive device</span>
-              <strong>Firmware {firmwareVersion} · simulated prices · not live data</strong>
+              <strong>
+                <span>Firmware {firmwareVersion}</span>
+                <span>Simulated prices</span>
+                <span>Not live data</span>
+              </strong>
               <button type="button" onClick={resetDemo}>Restart walkthrough</button>
             </div>
             <div className={styles.deviceShell}>
@@ -1392,8 +1395,7 @@ export default function DeviceGuide() {
               </div>
               <span className={styles.usbCable} aria-hidden="true" />
             </div>
-            <p className={styles.deviceScaleNote}>Faithful 4:3 display · enlarged from the physical 320 × 240 screen</p>
-            <p className={styles.demoNotice}><strong>Demo data only.</strong> Simulator prices and changes are generated examples—not live or delayed market quotes. Symbols entered here stay in your browser and are not sent to a market-data service. This walkthrough is for product instruction only and is not financial advice.</p>
+            <p className={styles.demoNotice}><strong>Demo data only.</strong> Simulator prices and changes are generated examples, not live or delayed market quotes. Symbols entered here stay in your browser and are not sent to a market-data service. This walkthrough is for product instruction only and is not financial advice.</p>
           </div>
 
           <aside className={styles.contextPanel}>
