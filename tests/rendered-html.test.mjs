@@ -33,3 +33,11 @@ test("exports the product page as static HTML", async () => {
   assert.doesNotMatch(html, /The three everyday gestures/i);
   assert.doesNotMatch(html, /Most days, this is all you need/i);
 });
+
+test("keeps the interactive ticker inside narrow phone viewports", async () => {
+  const css = await readFile(new URL("../app/guide/guide.module.css", import.meta.url), "utf8");
+
+  assert.doesNotMatch(css, /min-width:\s*400px/);
+  assert.match(css, /\.deviceShell\s*{[^}]*max-width:\s*100%[^}]*min-width:\s*0/s);
+  assert.match(css, /\.walkthrough\s*{[^}]*overflow-x:\s*clip/s);
+});
