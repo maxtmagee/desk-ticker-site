@@ -1379,7 +1379,6 @@ export default function DeviceGuide() {
           <div className={styles.deviceStage}>
             <p className={styles.srOnly} role="status" aria-live="polite">Desk Ticker screen: {guidance.title}</p>
             <div className={styles.deviceToolbar}>
-              <span><i /> Interactive device</span>
               <strong>
                 <span>Firmware {firmwareVersion}</span>
                 <span>Simulated prices</span>

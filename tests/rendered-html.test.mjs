@@ -33,6 +33,7 @@ test("exports the product page as static HTML", async () => {
   assert.doesNotMatch(html, /The three everyday gestures/i);
   assert.doesNotMatch(html, /Most days, this is all you need/i);
   assert.doesNotMatch(html, /Skip to interactive device/i);
+  assert.doesNotMatch(html, /Interactive device/i);
   assert.doesNotMatch(html, /Faithful 4:3 display/i);
   assert.doesNotMatch(html, /generated examples—/i);
 });
